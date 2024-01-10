@@ -274,9 +274,6 @@ class ColumnSorter:
                 container_sum = np.sum(containers)
                 current_max_containers = np.max(containers)
 
-                # if np.sum(containers) == container_sum:
-                #     sequence_is_optimum = 1
-                #     current_max_containers = np.max(containers)
                 if current_max_containers < best_max_containers or \
                         (current_max_containers == best_max_containers and container_sum < best_sum):
                     best_sum = container_sum.copy()
@@ -294,24 +291,4 @@ class ColumnSorter:
         print(np.max(containers))
         print(np.sum(containers))
 
-        # print(time.time() - start_time)
         return best_sequence, best_max_containers
-
-
-# n = 64
-#
-# cs = ColumnSorter(n, n)
-#
-# patterns = np.zeros((cs.num_rows, cs.num_columns))
-# for j in range(cs.num_rows):
-#     for k in range(cs.num_columns):
-#         if random.random() > (0.7 + random.random() * 0.15):
-#             patterns[j, k] = 1
-#
-# [best_sequence, best_max] = cs.optimize_sequence(patterns, 1000)
-#
-#
-# patterns_0_1_2 = cs.pre_process(patterns.T[best_sequence].T)
-# containers = cs.count_containers(patterns_0_1_2)
-# print(best_max)
-# print(np.sum(containers))

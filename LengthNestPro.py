@@ -1,18 +1,9 @@
-# import math
-# import numpy as np
 import time
-# import math
 import sys
-# import os
-# from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QApplication
-# from PyQt5.QtWidgets import QTableWidgetItem
 from PyQt5.QtGui import QPalette, QColor
-# from PyQt5.QtCore import Qt
-# from xml.etree import ElementTree
-# from nest_calculation import CalculateThread
-# from fractions import Fraction
 from window import Window
+from NewWindow import NewWindow
 
 # TODO add results outputs such as scrap %
 # TODO number or letter each pattern
@@ -24,7 +15,7 @@ from window import Window
 # TODO implement a xml template for default settings that opens on launch
 
 # Start timer
-start_time = time.time()
+application_start_time = time.time()
 
 # Create the application
 app = QApplication(sys.argv)
@@ -53,83 +44,14 @@ app.setPalette(palette)
 
 def main():
     # Create window
-    window = Window()
+    window = NewWindow()
     window.app = app
 
     # Show window
     window.show()
     window.t1.update_table_width(window.t1)
 
-    # TODO change this to a default file that is always opened on start up; put file in lengthnestpro path
-    # Allow user to select xml file to open
-    # file_path = 0
-    # if file_path == 0:
-    #     file_path = window.default_path_string + "/container test.xml"
-    #     if file_path:
-    #         tree = ElementTree.parse(file_path)
-    #         nesting_job = tree.getroot()
-    #
-    #         # Create blank list with length equal to the number of parts in the nesting job
-    #         blank_list = []
-    #         required_parts = nesting_job.find('requiredParts')
-    #         for i in range(len(required_parts)):
-    #             blank_list.append("")
-    #
-    #         # Copy blank list to initialize each attribute
-    #         name = blank_list.copy()
-    #         qty = blank_list.copy()
-    #         length = blank_list.copy()
-    #
-    #         # Clear contents from table
-    #         window.t1.clearContents()
-    #
-    #         # Extract info for each part and add it to "required parts" table
-    #         i = 0
-    #         for part in required_parts:
-    #             name[i] = QTableWidgetItem(part.find('name').text)
-    #             qty[i] = QTableWidgetItem(part.find('qty').text)
-    #             length[i] = QTableWidgetItem(part.find('length').text)
-    #             name[i].setTextAlignment(Qt.AlignCenter)
-    #             qty[i].setTextAlignment(Qt.AlignCenter)
-    #             length[i].setTextAlignment(Qt.AlignCenter)
-    #             window.t1.setItem(i, 0, qty[i])
-    #             window.t1.setItem(i, 1, length[i])
-    #             window.t1.setItem(i, 2, name[i])
-    #             i += 1
-    #
-    #         # Extract nesting settings and add them to "nesting settings" table
-    #         nesting_settings = nesting_job.find('nestingSettings')
-    #
-    #         if hasattr(nesting_settings.find('stockLength'), 'text'):
-    #             stock_length = QTableWidgetItem(nesting_settings.find('stockLength').text)
-    #             stock_length.setTextAlignment(Qt.AlignCenter)
-    #             window.t2.setItem(0, 0, stock_length)
-    #
-    #         if hasattr(nesting_settings.find('leftWaste'), 'text'):
-    #             left_waste = QTableWidgetItem(nesting_settings.find('leftWaste').text)
-    #             left_waste.setTextAlignment(Qt.AlignCenter)
-    #             window.t2.setItem(1, 0, left_waste)
-    #
-    #         if hasattr(nesting_settings.find('rightWaste'), 'text'):
-    #             right_waste = QTableWidgetItem(nesting_settings.find('rightWaste').text)
-    #             right_waste.setTextAlignment(Qt.AlignCenter)
-    #             window.t2.setItem(2, 0, right_waste)
-    #
-    #         if hasattr(nesting_settings.find('spacing'), 'text'):
-    #             spacing = QTableWidgetItem(nesting_settings.find('spacing').text)
-    #             spacing.setTextAlignment(Qt.AlignCenter)
-    #             window.t2.setItem(3, 0, spacing)
-    #
-    #         if hasattr(nesting_settings.find('maxPartsPerNest'), 'text'):
-    #             max_parts_per_nest = QTableWidgetItem(nesting_settings.find('maxPartsPerNest').text)
-    #             max_parts_per_nest.setTextAlignment(Qt.AlignCenter)
-    #             window.t2.setItem(4, 0, max_parts_per_nest)
-    #
-    #         if hasattr(nesting_settings.find('maxContainers'), 'text'):
-    #             max_containers = QTableWidgetItem(nesting_settings.find('maxContainers').text)
-    #             max_containers.setTextAlignment(Qt.AlignCenter)
-    #             window.t2.setItem(5, 0, max_containers)
-
+    # Exit when finished
     sys.exit(app.exec_())
 
 

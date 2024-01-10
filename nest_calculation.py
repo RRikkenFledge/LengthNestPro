@@ -1,12 +1,12 @@
-import numpy as np
-import time
-import math
-from PyQt5.QtCore import pyqtSignal, QObject
-# from matplotlib import pyplot as plt
-# import matplotlib
-from column_sort import ColumnSorter
 import copy
-# matplotlib.use('Agg')
+import math
+import time
+
+import numpy as np
+from PyQt5.QtCore import pyqtSignal, QObject
+
+from CalculationInputs import CalculationInputs
+from column_sort import ColumnSorter
 
 
 # Create calculate thread class
@@ -94,11 +94,6 @@ class CalculateThread(QObject):
             self.patterns_inv = np.linalg.inv(self.patterns)
             self.patterns_trans_inv = np.transpose(self.patterns_inv)
             self.ones_vector = np.ones((len(self.patterns[0]), 1))
-        # elif mode == 1:
-        #     self.patterns_inv = np.linalg.solve(self.patterns.T.dot(self.patterns), self.patterns.T)
-        #     self.patterns_trans_inv = np.transpose(self.patterns_inv)
-        #     self.ones_vector = np.ones((len(self.patterns[0]), 1))
-        if mode == 0:
             self.pi = np.dot(self.patterns_trans_inv, self.ones_vector)
         elif mode == 1 or mode == 2:
             self.pi = self.nested_lengths / self.nestable_length
@@ -597,90 +592,6 @@ class CalculateThread(QObject):
                                               self.window.max_containers))
 
         best_sequence = self.window.current_sequence.copy()
-        # best_required_lengths = self.worst_case.copy()
-        # part_sequence_is_optimum = 0
-        # ij_best = [-1, -1]
-
-        # # Don't enter while loop if max_containers is 1
-        # if self.window.max_containers == 1:
-        #     part_sequence_is_optimum = 1
-
-        # sequencing_loop_counter = 0
-        # sequencing_loop_counter_best = 0
-        # x = []
-        # y = []
-
-        # # Loop to find best sequence of parts
-        # while part_sequence_is_optimum == 0:
-        #     for i in range(self.num_parts):
-        #         if sequencing_loop_counter - sequencing_loop_counter_best >= 6:
-        #             part_sequence_is_optimum = 1
-        #             break
-        #         if part_sequence_is_optimum == 1:
-        #             break
-        #         starting_sequence = self.window.current_sequence.copy()
-        #         for j in range(self.num_parts):
-        #             if part_sequence_is_optimum == 1:
-        #                 break
-        #             index_to_move = np.where(starting_sequence == i)[0]
-        #
-        #             # Move current part to jth position (swap)
-        #             term_a = starting_sequence[index_to_move].copy()
-        #             term_b = starting_sequence[j].copy()
-        #             self.window.current_sequence = starting_sequence.copy()
-        #             self.window.current_sequence[index_to_move] = term_b.copy()
-        #             self.window.current_sequence[j] = term_a.copy()
-        #
-        #             self.window.part_quantities = initial_part_quantities[self.window.current_sequence].copy()
-        #             self.window.part_lengths = initial_part_lengths[self.window.current_sequence].copy()
-        #             self.window.part_names = initial_part_names[self.window.current_sequence].copy()
-        #
-        #             self.nested_lengths = initial_nested_lengths[self.window.current_sequence].copy()
-        #
-        #             # Reinitialize nestable length
-        #             self.nestable_length = initial_nestable_length
-        #
-        #             # Reinitialize patterns matrix (single part nesting patterns)
-        #             self.patterns = np.zeros((self.num_parts, self.num_parts))
-        #             for k in range(self.num_parts):
-        #                 self.patterns[k, k] = math.floor(self.nestable_length / self.nested_lengths[k])
-        #
-        #             # Run the column generation algorithm to find the best set of nest patterns for the job quantities
-        #             [self.required_lengths, self.allocation, self.patterns] = \
-        #                 self.column_gen(self.window.max_containers, self.window.part_quantities,
-        #                                 self.parts_sublist, 0)
-        #
-        #             # Check if i and j match from the last time a best sequence was found
-        #             if [i, j] == ij_best:
-        #                 part_sequence_is_optimum = 1
-        #
-        #             if self.required_lengths < best_required_lengths - 0.00001:
-        #                 print("new best")
-        #                 print(self.required_lengths)
-        #                 best_required_lengths = self.required_lengths.copy()
-        #                 ij_best = [i, j]
-        #                 sequencing_loop_counter_best = sequencing_loop_counter
-        #                 best_sequence = self.window.current_sequence.copy()
-        #
-        #                 x = np.append(x, time.time())
-        #                 y = np.append(y, self.required_lengths)
-        #
-        #             # Is this needed?  It seems to help reduce scrap in some cases.
-        #             elif self.required_lengths == best_required_lengths:
-        #                 print("tied best")
-        #                 print(self.required_lengths)
-        #                 best_required_lengths = self.required_lengths.copy()
-        #                 best_sequence = self.window.current_sequence.copy()
-        #
-        #         self.window.current_sequence = best_sequence.copy()
-        #
-        #     sequencing_loop_counter += 1
-        #
-        # x = np.append(x, time.time())
-        # y = np.append(y, self.required_lengths)
-        #
-        # plt.plot(x, y)
-        # plt.savefig("mygraph.png")
 
         # Run through one more time using best sequence to get best patterns
         self.window.part_quantities = initial_part_quantities[best_sequence].copy()
@@ -1016,7 +927,8 @@ class CalculateThread(QObject):
                                     if do_not_adjust_allocations == 0:
                                         self.int_allocation[rightmost_pattern_index] -= 1
                                         self.remaining_part_quantities += np.expand_dims(self.patterns.T[
-                                            rightmost_pattern_index], axis=0).T
+                                                                                             rightmost_pattern_index],
+                                                                                         axis=0).T
 
                                     if skip_to_end == 1:
                                         break
